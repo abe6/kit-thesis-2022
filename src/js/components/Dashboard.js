@@ -21,16 +21,17 @@ export default function Dashboard() {
         }
     }
 
+    const title = (currentUser.displayName) ? `Welcome, ${currentUser.displayName}` : 'Dashboard'
+    
     return (
         <>
             <Card>
                 <Card.Body>
-                    <h2 className='text-center mb-2'>Dashboard</h2>
+                    <h2 className='text-center mb-2'>{title}</h2>
                     {error && <Alert variant='danger'>{error}</Alert>}
                     <strong>Email: </strong>{currentUser.email}
                     <Link to="/update-profile" className='btn btn-primary w-100 mt-3'>Update profile</Link>
                 </Card.Body>
-
             </Card>
             <div className='w-100 text-center mt-2'>
                 <Button variant='link' onClick={handleLogout}>Log Out</Button>

@@ -4,9 +4,10 @@ import { Link, useNavigate} from 'react-router-dom'
 import { useAuth } from '../firebase/auth'
 
 export default function UpdateProfile() {
-    const { currentUser, changeEmail, changePassword } = useAuth()
+    const { currentUser, changeEmail, changePassword, changeProfile } = useAuth()
 
     const emailRef = useRef()
+    const nameRef = useRef()
     const passwordRef = useRef()
     const passwordConfirmRef = useRef()
   
@@ -25,11 +26,15 @@ export default function UpdateProfile() {
       setLoading(true)
 
       const promises = []
-      if (emailRef.current.value != currentUser.email) {
+      if (emailRef.current.value !== currentUser.email) {
         promises.push(changeEmail(emailRef.current.value))
       }
       if (passwordRef.current.value) {
         promises.push(changePassword(passwordRef.current.value))
+      }
+      if (nameRef.current.value !== currentUser.displayName) {
+        // Todo: profile images
+        promises.push(changeProfile(nameRef.current.value, null))
       }
 
       Promise.all(promises).then(() => {
@@ -52,6 +57,10 @@ export default function UpdateProfile() {
               <Form.Group id="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control type="email" ref={emailRef} required defaultValue={currentUser.email}/>
+              </Form.Group>
+              <Form.Group id="name">
+                <Form.Label>Name</Form.Label>
+                <Form.Control type="input" ref={nameRef} defaultValue={currentUser.displayName}/>
               </Form.Group>
               <Form.Group id="password">
                 <Form.Label>Password</Form.Label>

@@ -6,7 +6,8 @@ import {
     signOut,
     sendPasswordResetEmail,
     updateEmail,
-    updatePassword
+    updatePassword,
+    updateProfile
 } from 'firebase/auth'
 import { firebaseApp } from './firebase-config';
 import React, { useContext, useEffect, useState } from 'react';
@@ -63,6 +64,13 @@ export function AuthProvider({children}) {
         return updatePassword(currentUser, password)
     }
 
+    function changeProfile(name, photoLink) {
+        return updateProfile(currentUser, {
+            displayName: name,
+            photoURL: photoLink
+        })
+    }
+
     const value = {
         currentUser,
         register,
@@ -70,7 +78,8 @@ export function AuthProvider({children}) {
         logout,
         resetPassword,
         changeEmail,
-        changePassword
+        changePassword,
+        changeProfile
     }
 
     return (
