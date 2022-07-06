@@ -1,15 +1,16 @@
-import React from 'react'
 import { useRef, useState } from 'react'
 import {Form, Button, Card, Alert } from 'react-bootstrap'
+import { Link, useNavigate} from 'react-router-dom'
 import { useAuth } from '../firebase/auth'
 
 export default function Register() {
-  const { register, currentUser } = useAuth()
+  const { register } = useAuth()
 
   const emailRef = useRef()
   const passwordRef = useRef()
   const passwordConfirmRef = useRef()
 
+  const navigate = useNavigate()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -24,6 +25,7 @@ export default function Register() {
       setError('')
       setLoading(true)
       await register(emailRef.current.value, passwordRef.current.value)
+      navigate("/");
     } catch (error) {
       //setError(JSON.stringify(error.message))
       setError(error.message)
@@ -37,7 +39,6 @@ export default function Register() {
       <Card>
         <Card.Body>
           <h2 className='text-center mb-2'>Sign Up</h2>
-          {currentUser && currentUser.email}
           {error && <Alert variant='danger'>{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
@@ -57,7 +58,7 @@ export default function Register() {
         </Card.Body>
       </Card>
       <div className='w-100 text-center mt-2'>
-        Already have an account? Log in
+        Already have an account? <Link to="/login">Log In</Link>
       </div>
     </>
   )

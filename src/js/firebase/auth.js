@@ -2,7 +2,11 @@ import {
     getAuth, 
     onAuthStateChanged,
     createUserWithEmailAndPassword,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    signOut,
+    sendPasswordResetEmail,
+    updateEmail,
+    updatePassword
 } from 'firebase/auth'
 import { firebaseApp } from './firebase-config';
 import React, { useContext, useEffect, useState } from 'react';
@@ -19,6 +23,7 @@ export function useAuth() {
 export function AuthProvider({children}) {
 
     const [currentUser, setCurrentUser] = useState() 
+    const [loading, setLoading] = useState(true) 
     
     // Use effect so this only gets assigned once. 
     useEffect(() => {
@@ -26,6 +31,7 @@ export function AuthProvider({children}) {
         // Automatically sets the current user when ever the auth state changes. 
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user)
+            setLoading(false)
         })
     
         return unsubscribe
@@ -41,15 +47,35 @@ export function AuthProvider({children}) {
         return signInWithEmailAndPassword(auth, email, password)
     }
 
+    function logout(){
+        return signOut(auth)
+    }
+
+    function resetPassword(email){
+        return sendPasswordResetEmail(auth, email)
+    }
+
+    function changeEmail(email){
+        return updateEmail(currentUser, email)
+    }
+
+    function changePassword(password){
+        return updatePassword(currentUser, password)
+    }
+
     const value = {
         currentUser,
         register,
-        login
+        login,
+        logout,
+        resetPassword,
+        changeEmail,
+        changePassword
     }
 
     return (
         <AuthContext.Provider value={value}>
-            {children}
+            {!loading && children}
         </AuthContext.Provider>
     )
 }
