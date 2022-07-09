@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import ForgotPassword from './components/ForgotPassword';
 import UpdateProfile from './components/UpdateProfile';
+import { FirestoreProvider } from './firebase/firestore';
 
 function App() {
 
@@ -19,24 +20,26 @@ function App() {
       <div className='w-100' style={{maxWidth: "400px"}}>
         <Router>
           <AuthProvider>
-            <Routes>
-              {/* Private routes */}
-              <Route exact path="/" element={
-                <PrivateRoute>
-                  <Dashboard/> 
-                </PrivateRoute>
-              }/>
-              <Route path="/update-profile" element={
-                <PrivateRoute>
-                  <UpdateProfile/>
-                </PrivateRoute>
-              }/>
+            <FirestoreProvider>
+              <Routes>
+                {/* Private routes */}
+                <Route exact path="/" element={
+                  <PrivateRoute>
+                    <Dashboard/> 
+                  </PrivateRoute>
+                }/>
+                <Route path="/update-profile" element={
+                  <PrivateRoute>
+                    <UpdateProfile/>
+                  </PrivateRoute>
+                }/>
 
-              {/* Public routes */}
-              <Route path="/register" element={<Register/>} />
-              <Route path="/login" element={<Login/>} />
-              <Route path="/forgot-password" element={<ForgotPassword/>} />
-            </Routes>
+                {/* Public routes */}
+                <Route path="/register" element={<Register/>} />
+                <Route path="/login" element={<Login/>} />
+                <Route path="/forgot-password" element={<ForgotPassword/>} />
+              </Routes>
+            </FirestoreProvider>
           </AuthProvider>
         </Router>
       </div>

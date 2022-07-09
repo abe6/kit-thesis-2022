@@ -2,6 +2,7 @@ import { Card, Button, Alert } from 'react-bootstrap'
 import { useState } from 'react'
 import { useAuth } from '../firebase/auth'
 import { Link, useNavigate} from 'react-router-dom'
+import FriendsList from './FriendsList'
 
 export default function Dashboard() {
 
@@ -29,7 +30,8 @@ export default function Dashboard() {
                 <Card.Body>
                     <h2 className='text-center mb-2'>{title}</h2>
                     {error && <Alert variant='danger'>{error}</Alert>}
-                    <strong>Email: </strong>{currentUser.email}
+                    <strong>Email: </strong>{currentUser.email} 
+                    <FriendsList/>
                     <Link to="/update-profile" className='btn btn-primary w-100 mt-3'>Update profile</Link>
                 </Card.Body>
             </Card>
