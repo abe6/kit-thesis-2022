@@ -2,9 +2,12 @@ import { useRef, useState } from 'react'
 import {Form, Button, Card, Alert } from 'react-bootstrap'
 import { Link, useNavigate} from 'react-router-dom'
 import { useAuth } from '../firebase/auth'
+import { useFirestore } from '../firebase/firestore'
 
 export default function UpdateProfile() {
     const { currentUser, changeEmail, changePassword, changeProfile } = useAuth()
+
+    const { updateUserData } = useFirestore()
 
     const emailRef = useRef()
     const nameRef = useRef()
@@ -38,6 +41,7 @@ export default function UpdateProfile() {
       }
 
       Promise.all(promises).then(() => {
+        updateUserData(currentUser)
         navigate('/')
       }).catch((error) =>{
         setError(error.message)

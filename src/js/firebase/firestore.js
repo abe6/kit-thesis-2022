@@ -1,4 +1,4 @@
-import { getFirestore, doc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
 import { firebaseApp } from './firebase-config';
 import React, { useContext } from 'react';
 
@@ -16,9 +16,29 @@ export function FirestoreProvider({children}) {
         return doc(db, "users", userId)
     }
 
+    async function updateUserData(user) {
+        const userData = {
+            displayName: user.displayName || '',
+            email: user.email,
+            photoURL: user.photoURL || ''
+        }
+        const userRef = doc(db, "users", user.uid);
+
+        await updateDoc(userRef, {
+            data: userData
+        }); 
+    }
+
+    async function getUserData(uid) {
+        const docRef = doc(db, "users", uid)
+        const docSnap = await getDoc(docRef)
+        return docSnap.data().data;
+    }
 
     const value = {
-        getUserSnapshot
+        getUserSnapshot,
+        updateUserData,
+        getUserData
     }
 
     return (

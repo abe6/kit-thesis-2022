@@ -2,9 +2,11 @@ import { useRef, useState } from 'react'
 import {Form, Button, Card, Alert } from 'react-bootstrap'
 import { Link, useNavigate} from 'react-router-dom'
 import { useAuth } from '../firebase/auth'
+import { useFirestore } from '../firebase/firestore'
 
 export default function Register() {
-  const { register } = useAuth()
+  const { register, currentUser } = useAuth()
+  const { updateUserData } = useFirestore()
 
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -25,6 +27,7 @@ export default function Register() {
       setError('')
       setLoading(true)
       await register(emailRef.current.value, passwordRef.current.value)
+      await updateUserData(currentUser)
       navigate("/");
     } catch (error) {
       //setError(JSON.stringify(error.message))
