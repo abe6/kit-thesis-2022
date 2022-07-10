@@ -17,7 +17,7 @@ function App() {
       className='d-flex align-items-center justify-content-center'
       style={{ minHeight: "100vh"}}
     >
-      <div className='w-100' style={{maxWidth: "400px"}}>
+      <div className='vw-75' style={{minWidth: "20px"}}>
         <Router>
           <AuthProvider>
             <FirestoreProvider>

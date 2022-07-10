@@ -13,15 +13,14 @@ export default function Contact(props) {
     }, [])
     
     return (
-        <Card>
+        <Card className="m-1 w-25">
             <Card.Img variant="top" src="https://via.placeholder.com/150" />
             <Card.Body>
                 <Card.Title>{userData.displayName || 'No name'}</Card.Title>
                 <Card.Text>
-                {error && <Alert variant='danger'>{error}</Alert>}
-                <p>Todo: photo</p>
-                <p>{props.uid}</p>
-                <p>{JSON.stringify(userData)}</p>
+                    {error && <Alert variant='danger'>{error}</Alert>}
+                    todo: photo && {props.uid} && JSON.stringify(userData)
+                
                 </Card.Text>
                 <Button variant="primary">Button todo</Button>
             </Card.Body>

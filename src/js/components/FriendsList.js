@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { onSnapshot } from 'firebase/firestore'
 import { useFirestore } from "../firebase/firestore"
 import { useAuth } from "../firebase/auth"
-import { Alert, CardGroup, Container } from 'react-bootstrap'
+import { Alert, CardGroup, Col, Container, Row } from 'react-bootstrap'
 import Contact from './Contact'
 
 export default function FriendsList() {
@@ -31,13 +31,19 @@ export default function FriendsList() {
         {error && <Alert variant='danger'>{error}</Alert>}
         
         <p><strong>Your friends</strong> ({friendsUidList.length}) :</p>
-        {
-          friendsUidList.map(uid => {
-            return (
-              <Contact uid={uid}/>
-            )
-          })
-        }
+
+        <div className='overflow-scroll' >
+          <div className="vw-100 d-flex flex-row overflow-auto">
+            {
+              friendsUidList.map(uid => {
+                return (
+                  <Contact uid={uid}/>
+                )
+              })
+            } 
+          </div>
+        </div>
+        
       </>
     )
 }
