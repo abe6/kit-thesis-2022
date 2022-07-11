@@ -3,22 +3,21 @@ import { onSnapshot } from 'firebase/firestore'
 import { useFirestore } from "../firebase/firestore"
 import { useAuth } from "../firebase/auth"
 import { Alert } from 'react-bootstrap'
-import Contact from './Contact'
-import AddFriend from "./AddFriend"
+import Message from './Message'
 
-export default function FriendsList() {
+export default function MessagesList() {
     const { getUserSnapshot } = useFirestore()
     const { currentUser } = useAuth()
 
-    const [friendsUidList, setFriendsUidList] = useState([])
+    const [messagesList, setMessagesList] = useState([])
     const [error, setError] = useState('')
 
     // Only runs once to start the listening
     useEffect(() => {
-        // Updates friendslist whenever it changes
+        // Updates messagesList whenever it changes
         const unsub = onSnapshot(getUserSnapshot(currentUser.uid), userSnapshot => {
           try {
-            setFriendsUidList(userSnapshot.data().friends || [])
+            setMessagesList(userSnapshot.data().messages || [])
           } catch (error) {
             setError(error)
           }
@@ -31,14 +30,14 @@ export default function FriendsList() {
       <>
         {error && <Alert variant='danger'>{error}</Alert>}
         
-        <p><AddFriend/> <strong>Your friends</strong> ({friendsUidList.length}) :</p>
+        <p><strong>Your Messages</strong> ({messagesList.length}) :</p>
 
         <div className='overflow-scroll' >
           <div className="vw-100 d-flex flex-row overflow-auto">
             {
-              friendsUidList.map((uid, i) => {
+              messagesList.map((mes, i) => {
                 return (
-                  <Contact uid={uid} key={i}/>
+                  <Message message={mes} key={i}/>
                 )
               })
             } 

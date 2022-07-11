@@ -1,6 +1,7 @@
-import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, getDoc, getDocs, collection, arrayUnion, setDoc} from "firebase/firestore";
 import { firebaseApp } from './firebase-config';
 import React, { useContext } from 'react';
+import { useAuth } from "./auth";
 
 const db = getFirestore(firebaseApp);
 
@@ -11,22 +12,33 @@ export function useFirestore() {
 }
 
 export function FirestoreProvider({children}) {
+
+    const { currentUser} = useAuth()
     
     function getUserSnapshot(userId) {
         return doc(db, "users", userId)
     }
 
-    async function updateUserData(user) {
-        const userData = {
-            displayName: user.displayName || '',
-            email: user.email,
-            photoURL: user.photoURL || ''
-        }
-        const userRef = doc(db, "users", user.uid);
+    function updateUserData() {
 
-        await updateDoc(userRef, {
+        const userData = {
+            displayName: currentUser.displayName,
+            email: currentUser.email,
+            photoURL: currentUser.photoURL
+        }
+
+        return setDoc(doc(db, "users", currentUser.uid), {
             data: userData
-        }); 
+        });
+        
+    }
+
+    async function createUserDoc(uid, email) {
+        await setDoc(doc(db, "users", uid), {
+            data: {
+                email: email
+            }
+          });
     }
 
     async function getUserData(uid) {
@@ -35,10 +47,32 @@ export function FirestoreProvider({children}) {
         return docSnap.data().data;
     }
 
+    async function addFriend(email){
+        let id = ''
+
+        const allUsersSnapshot = await getDocs(collection(db, 'users'))
+        allUsersSnapshot.forEach((doc) => {
+            if (doc.data().data.email === email){
+                id = doc.id
+            }
+          });
+
+        if (id) {
+            const currentUserSnapshot = getUserSnapshot(currentUser.uid)
+            await updateDoc(currentUserSnapshot, {
+                friends: arrayUnion(id)
+            })
+        } else {
+            throw new Error("User not found")
+        }
+    }
+
     const value = {
         getUserSnapshot,
         updateUserData,
-        getUserData
+        getUserData,
+        addFriend,
+        createUserDoc
     }
 
     return (

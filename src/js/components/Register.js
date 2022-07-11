@@ -5,8 +5,8 @@ import { useAuth } from '../firebase/auth'
 import { useFirestore } from '../firebase/firestore'
 
 export default function Register() {
-  const { register, currentUser } = useAuth()
-  const { updateUserData } = useFirestore()
+  const { register } = useAuth()
+  const { createUserDoc } = useFirestore()
 
   const emailRef = useRef()
   const passwordRef = useRef()
@@ -18,23 +18,22 @@ export default function Register() {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    setError('')
+    setLoading(true)
 
     if(passwordRef.current.value !== passwordConfirmRef.current.value){
       return setError('Passwords do not match.')
     }
 
-    try {
-      setError('')
-      setLoading(true)
-      await register(emailRef.current.value, passwordRef.current.value)
-      await updateUserData(currentUser)
-      navigate("/");
-    } catch (error) {
-      //setError(JSON.stringify(error.message))
+    register(emailRef.current.value, passwordRef.current.value).then(credentials => {
+      createUserDoc(credentials.user.uid, credentials.user.email)
+      navigate("/")
+    }).catch(error => {
       setError(error.message)
-    }
+    }).finally(() => {
+      setLoading(false)
+    })
 
-    setLoading(false)
   }
 
   return (

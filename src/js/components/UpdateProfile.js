@@ -18,7 +18,7 @@ export default function UpdateProfile() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
   
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
       e.preventDefault()
   
       if(passwordRef.current.value !== passwordConfirmRef.current.value){
@@ -41,7 +41,7 @@ export default function UpdateProfile() {
       }
 
       Promise.all(promises).then(() => {
-        updateUserData(currentUser)
+        updateUserData()
         navigate('/')
       }).catch((error) =>{
         setError(error.message)
