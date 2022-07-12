@@ -26,6 +26,7 @@ export default function AddFriend() {
 
         addFriend(emailRef.current.value).then(() => {
             setMessage("Friend added!")
+            e.target.reset()
         }).catch(error => {
             setError(error.message)
         }).finally(() => {

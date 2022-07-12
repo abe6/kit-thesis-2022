@@ -24,7 +24,7 @@ export default function Contact(props) {
                     todo: photo  <br/> { JSON.stringify(userData) }
                 
                 </Card.Text>
-                <SendMessage contact={userData}/>
+                <SendMessage name={userData.displayName} uid={props.uid}  btntext="Send message"/>
             </Card.Body>
         </Card>
     )

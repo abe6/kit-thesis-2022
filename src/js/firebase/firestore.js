@@ -1,4 +1,4 @@
-import { getFirestore, doc, updateDoc, getDoc, getDocs, collection, arrayUnion, setDoc} from "firebase/firestore";
+import { getFirestore, doc, updateDoc, getDoc, getDocs, collection, arrayUnion, arrayRemove, setDoc} from "firebase/firestore";
 import { firebaseApp } from './firebase-config';
 import React, { useContext } from 'react';
 import { useAuth } from "./auth";
@@ -67,12 +67,33 @@ export function FirestoreProvider({children}) {
         }
     }
 
+    function addMessageTo(uid, messageText){
+        const recipientSnap = getUserSnapshot(uid)
+        return updateDoc(recipientSnap, {
+            messages: arrayUnion({
+                sender: currentUser.uid,
+                text: messageText,
+                sentAt: Date.now(),
+                status: "inbox"
+            })
+        })
+    }
+
+    function removeMessageFrom(uid, message){
+        const recipientSnap = getUserSnapshot(uid)
+        return updateDoc(recipientSnap, {
+            messages: arrayRemove(message)
+        });
+    }
+
     const value = {
         getUserSnapshot,
         updateUserData,
         getUserData,
         addFriend,
-        createUserDoc
+        createUserDoc,
+        addMessageTo,
+        removeMessageFrom
     }
 
     return (

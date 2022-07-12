@@ -5,7 +5,7 @@ import { useFirestore } from '../firebase/firestore'
 
 
 export default function SendMessage(props) {
-    const { addFriend } = useFirestore()
+    const { addMessageTo } = useFirestore()
 
     const newMessageTextRef = useRef()
 
@@ -23,17 +23,24 @@ export default function SendMessage(props) {
         setError('')
         setMessage('')
 
-
+        addMessageTo(props.uid, newMessageTextRef.current.value).then(() => {
+            setMessage('Message sent!')
+            e.target.reset()
+        }).catch(error => {
+            setError(error)
+        }).finally(() => {
+            setLoading(false)
+        })
         
     }
 
     return (
     <>
-        <Button className="nextButton mt-2" onClick={handleShow}>Send message</Button>
+        <Button className="nextButton mt-2" onClick={handleShow}>{props.btntext}</Button>
 
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Send a message to {props.contact.displayName}</Modal.Title>
+                <Modal.Title>Send a message to {props.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {message && <Alert variant='success'>{message}</Alert>}

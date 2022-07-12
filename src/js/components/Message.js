@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react"
 import { Card, Button, Alert } from 'react-bootstrap'
+import { useAuth } from "../firebase/auth"
 import { useFirestore } from "../firebase/firestore"
+import SendMessage from "./SendMessage"
 
 export default function Message(props) {
 
-    const { getUserData } = useFirestore()
+    const { getUserData, removeMessageFrom } = useFirestore()
+    const { currentUser } = useAuth()
 
     const [error, setError] = useState('')
     const [userData, setUserData] = useState({})
@@ -14,16 +17,28 @@ export default function Message(props) {
         getUserData(props.message.sender).then(data => setUserData(data)).catch( error => setError(error))
     }, [])
 
+    const sentAt = new Date(props.message.sentAt).toLocaleString()
+
+    async function onRemove(e){
+        e.preventDefault()
+        setError('')
+
+
+        removeMessageFrom(currentUser.uid, props.message).catch(error => setError(error))
+    }
+
     return (
         <Card className="m-1 w-25">
             <Card.Body>
                 <Card.Title>From: {userData.displayName || 'No name'}</Card.Title>
+                <Card.Subtitle className="text-muted">{sentAt}</Card.Subtitle>
                 <Card.Text>
                     {error && <Alert variant='danger'>{error}</Alert>}
                     todo: other message contents <br/> {JSON.stringify(props.message)}
                 
                 </Card.Text>
-                <Button variant="primary">Button todo</Button>
+                <Button variant="primary" size="sm" onClick={onRemove}>Remove message</Button>
+                <SendMessage name={userData.displayName} uid={props.message.sender} btntext="Reply"/>
             </Card.Body>
         </Card>
     )
