@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { onSnapshot } from 'firebase/firestore'
 import { useFirestore } from "../firebase/firestore"
 import { useAuth } from "../firebase/auth"
-import { Alert } from 'react-bootstrap'
+import { Alert, Card, Row, Col } from 'react-bootstrap'
 import Contact from './Contact'
 import AddFriend from "./AddFriend"
 
@@ -28,23 +28,29 @@ export default function FriendsList() {
     }, [])
     
     return (
-      <>
+      <Card className="w-100 mt-2">
         {error && <Alert variant='danger'>{error}</Alert>}
-        
-        <p><AddFriend/> <strong>Your friends</strong> ({friendsUidList.length}) :</p>
 
-        <div className='overflow-scroll' >
-          <div className="vw-100 d-flex flex-row overflow-auto">
-            {
-              friendsUidList.map((uid, i) => {
-                return (
-                  <Contact uid={uid} key={i}/>
-                )
-              })
-            } 
+        <Card.Header as="h4">
+          <div className='align-items-center'>
+              <strong>Your friends</strong> <span className="text-muted">({friendsUidList.length})</span>
+              <span className="float-end"> <AddFriend/> </span>
           </div>
-        </div>
-        
-      </>
+        </Card.Header>
+
+        <Card.Body className="">
+          <div className='overflow-scroll' >
+            <div className="vw-100 d-flex flex-row overflow-auto">
+              {
+                friendsUidList.map((uid, i) => {
+                  return (
+                    <Contact uid={uid} key={i}/>
+                  )
+                })
+              } 
+            </div>
+          </div>
+        </Card.Body>
+      </Card>
     )
 }

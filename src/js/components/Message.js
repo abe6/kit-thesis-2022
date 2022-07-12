@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Card, Button, Alert } from 'react-bootstrap'
+import { Card, Button, Alert, ButtonGroup, Row, Col } from 'react-bootstrap'
 import { useAuth } from "../firebase/auth"
 import { useFirestore } from "../firebase/firestore"
 import SendMessage from "./SendMessage"
@@ -28,7 +28,7 @@ export default function Message(props) {
     }
 
     return (
-        <Card className="m-1 w-25">
+        <Card className="m-1 mb-3 w-25" border="dark">
             <Card.Body>
                 <Card.Title>From: {userData.displayName || 'No name'}</Card.Title>
                 <Card.Subtitle className="text-muted">{sentAt}</Card.Subtitle>
@@ -37,9 +37,14 @@ export default function Message(props) {
                     todo: other message contents <br/> {JSON.stringify(props.message)}
                 
                 </Card.Text>
-                <Button variant="primary" size="sm" onClick={onRemove}>Remove message</Button>
-                <SendMessage name={userData.displayName} uid={props.message.sender} btntext="Reply"/>
+                
             </Card.Body>
+            <Card.Footer>
+                <Row className="d-flex align-items-center justify-content-end">
+                    <Col md="auto"> <SendMessage name={userData.displayName} uid={props.message.sender} btntext="Reply"/> </Col>
+                    <Col md="auto"> <Button size="sm" variant="primary" onClick={onRemove}>Delete</Button> </Col>
+                </Row>
+            </Card.Footer>
         </Card>
     )
 }

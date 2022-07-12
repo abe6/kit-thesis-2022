@@ -36,7 +36,7 @@ export default function AddFriend() {
 
     return (
     <>
-        <Button className="nextButton mt-2" onClick={handleShow}>Add Friend</Button>
+        <Button onClick={handleShow}>Add Friend</Button>
 
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>

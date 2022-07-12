@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { onSnapshot } from 'firebase/firestore'
 import { useFirestore } from "../firebase/firestore"
 import { useAuth } from "../firebase/auth"
-import { Alert } from 'react-bootstrap'
+import { Card, Alert } from 'react-bootstrap'
 import Message from './Message'
 
 export default function MessagesList() {
@@ -27,23 +27,26 @@ export default function MessagesList() {
     }, [])
     
     return (
-      <>
+      <Card className="w-100">
         {error && <Alert variant='danger'>{error}</Alert>}
-        
-        <p><strong>Your Messages</strong> ({messagesList.length}) :</p>
 
-        <div className='overflow-scroll' >
-          <div className="vw-100 d-flex flex-row overflow-auto">
-            {
-              messagesList.map((mes, i) => {
-                return (
-                  <Message message={mes} key={i}/>
-                )
-              })
-            } 
-          </div>
-        </div>
+        <Card.Header as="h4">
+          <strong>Your Messages</strong> <span className="text-muted">({messagesList.length})</span>
+        </Card.Header>
         
-      </>
+        <Card.Body className="">
+          <div className='overflow-scroll' >
+            <div className="vw-100 d-flex flex-row overflow-auto">
+              {
+                messagesList.map((mes, i) => {
+                  return (
+                    <Message message={mes} key={i}/>
+                  )
+                })
+              } 
+            </div>
+          </div>
+        </Card.Body>
+      </Card>
     )
 }

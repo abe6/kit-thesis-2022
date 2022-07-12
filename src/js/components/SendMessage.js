@@ -36,7 +36,7 @@ export default function SendMessage(props) {
 
     return (
     <>
-        <Button className="nextButton mt-2" onClick={handleShow}>{props.btntext}</Button>
+        <Button hidden={!props.btntext} size="sm" onClick={handleShow}>{props.btntext}</Button>
 
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Header closeButton>

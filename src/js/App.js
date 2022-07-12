@@ -13,11 +13,7 @@ import { FirestoreProvider } from './firebase/firestore';
 function App() {
 
   return (
-    <Container 
-      className='d-flex align-items-center justify-content-center'
-      style={{ minHeight: "100vh"}}
-    >
-      <div className='vw-75' style={{minWidth: "20px"}}>
+    <Container fluid="sm" className='d-flex align-items-center justify-content-center vw-100 vh-100'>
         <Router>
           <AuthProvider>
             <FirestoreProvider>
@@ -42,7 +38,6 @@ function App() {
             </FirestoreProvider>
           </AuthProvider>
         </Router>
-      </div>
     </Container>
     
   );
