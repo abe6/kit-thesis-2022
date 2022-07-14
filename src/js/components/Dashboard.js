@@ -1,4 +1,4 @@
-import { Button, Alert, Container } from 'react-bootstrap'
+import { Alert, Container, Dropdown, Stack, Image } from 'react-bootstrap'
 import { useState } from 'react'
 import { useAuth } from '../firebase/auth'
 import { Link, useNavigate} from 'react-router-dom'
@@ -26,21 +26,27 @@ export default function Dashboard() {
     const title = (currentUser.displayName) ? `Welcome, ${currentUser.displayName}` : 'Dashboard'
     
     return (
-        <Container fluid className='w-100 h-100 mt-3 mb-2 mx-0 px-0'>
+        <Container fluid className='w-100 h-100 p-0'>
 
-            <h1 className='text-center mb-2'>{title}</h1>
+            <Stack direction='horizontal' className='mt-2 mb-1'>
+                <h1 className='ms-auto ps-5'>{title}</h1>
+
+                <Dropdown className='ms-auto'>
+                    <Dropdown.Toggle as={Image} src='https://via.placeholder.com/50' roundedCircle />
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item as={Link} to="/update-profile"> Update profile </Dropdown.Item>
+                        <Dropdown.Item as='button' onClick={handleLogout}> Log Out </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+
+            </Stack>
 
             {error && <Alert variant='danger'>{error}</Alert>}
 
             <MessagesList/>
 
             <FriendsList/>
-
-            <Link to="/update-profile" className='btn btn-primary w-100 mt-3'>Update profile</Link>
-                
-            <div className='w-100 text-center mt-2'>
-                <Button variant='link' onClick={handleLogout}>Log Out</Button>
-            </div>
 
         </Container>
     )

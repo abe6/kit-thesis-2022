@@ -9,32 +9,35 @@ import Login from './components/Login';
 import ForgotPassword from './components/ForgotPassword';
 import UpdateProfile from './components/UpdateProfile';
 import { FirestoreProvider } from './firebase/firestore';
+import { StorageProvider } from './firebase/storage';
 
 function App() {
 
   return (
-    <Container fluid="sm" className='d-flex align-items-center justify-content-center vw-100 vh-100'>
+    <Container fluid="sm" className='d-flex align-items-center justify-content-center vw-100 vh-100 m-auto p-0'>
         <Router>
           <AuthProvider>
             <FirestoreProvider>
-              <Routes>
-                {/* Private routes */}
-                <Route exact path="/" element={
-                  <PrivateRoute>
-                    <Dashboard/> 
-                  </PrivateRoute>
-                }/>
-                <Route path="/update-profile" element={
-                  <PrivateRoute>
-                    <UpdateProfile/>
-                  </PrivateRoute>
-                }/>
+              <StorageProvider>
+                <Routes>
+                  {/* Private routes */}
+                  <Route exact path="/" element={
+                    <PrivateRoute>
+                      <Dashboard/> 
+                    </PrivateRoute>
+                  }/>
+                  <Route path="/update-profile" element={
+                    <PrivateRoute>
+                      <UpdateProfile/>
+                    </PrivateRoute>
+                  }/>
 
-                {/* Public routes */}
-                <Route path="/register" element={<Register/>} />
-                <Route path="/login" element={<Login/>} />
-                <Route path="/forgot-password" element={<ForgotPassword/>} />
-              </Routes>
+                  {/* Public routes */}
+                  <Route path="/register" element={<Register/>} />
+                  <Route path="/login" element={<Login/>} />
+                  <Route path="/forgot-password" element={<ForgotPassword/>} />
+                </Routes>
+              </StorageProvider>
             </FirestoreProvider>
           </AuthProvider>
         </Router>
