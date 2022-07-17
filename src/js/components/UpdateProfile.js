@@ -3,17 +3,19 @@ import { Form, Button, Card, Alert, Container } from 'react-bootstrap'
 import { Link,  useNavigate} from 'react-router-dom'
 import { useAuth } from '../firebase/auth'
 import { useFirestore } from '../firebase/firestore'
+import { useStorage } from '../firebase/storage'
 
 export default function UpdateProfile() {
     const { currentUser, changeEmail, changePassword, changeProfile } = useAuth()
 
     const { updateUserData } = useFirestore()
+    const { uploadProfilePicture } = useStorage()
 
     const emailRef = useRef()
     const nameRef = useRef()
     const passwordRef = useRef()
     const passwordConfirmRef = useRef()
-    const inputFile = useRef(null) 
+    const inputFile = useRef(null)
   
     const navigate = useNavigate()
     const [error, setError] = useState('')
@@ -29,9 +31,6 @@ export default function UpdateProfile() {
       }
 
       const promises = []
-      if (inputFile.files) {
-        
-      }
       if (emailRef.current.value !== currentUser.email) {
         promises.push(changeEmail(emailRef.current.value))
       }
@@ -60,7 +59,7 @@ export default function UpdateProfile() {
       try {
         inputFile.current.click();
       } catch (error) {
-        setError('')
+        setError(error)
       }
     }
 
@@ -70,10 +69,15 @@ export default function UpdateProfile() {
       setLoading(true)
 
       const file = e.target.files[0]
-      console.log(file)
-      console.log('todo: upload profile pic')
 
-      setLoading(true)
+      uploadProfilePicture(file).then((url) => {
+        changeProfile(currentUser.name, url).then(() => {
+          updateUserData()
+          setLoading(false)
+        })
+      }).catch(error => {
+        setError(error.message)
+      })
     }
   
     return (
@@ -81,7 +85,7 @@ export default function UpdateProfile() {
         <Container className='w-75'>
           <Card>
 
-            <Card.Img src="https://via.placeholder.com/100"/>
+            <Card.Img src={currentUser.photoURL ?? "https://via.placeholder.com/100"}/>
             <Card.ImgOverlay> 
               <Form.Control type='file' onChange={uploadFile} ref={inputFile} style={{display: 'none'}}/>
               <Button variant='link' className='w-100 bg-light bg-opacity-50 mb-0 mt-auto' onClick={showFileSelector} disabled={loading}>Upload New Image</Button>
@@ -113,7 +117,7 @@ export default function UpdateProfile() {
             </Card.Body>
           </Card>
           <div className='w-100 text-center mt-2'>
-            <Link to="/">Cancel</Link>
+            <Link to="/">Go Back</Link>
           </div>
         </Container>
       </Container>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { onSnapshot } from 'firebase/firestore'
 import { useFirestore } from "../firebase/firestore"
 import { useAuth } from "../firebase/auth"
-import { Alert, Card, Row, Col } from 'react-bootstrap'
+import { Alert, Card } from 'react-bootstrap'
 import Contact from './Contact'
 import AddFriend from "./AddFriend"
 
@@ -32,7 +32,7 @@ export default function FriendsList() {
         {error && <Alert variant='danger'>{error}</Alert>}
 
         <Card.Header as="h4">
-          <div className='align-items-center'>
+          <div>
               <strong>Your friends</strong> <span className="text-muted">({friendsUidList.length})</span>
               <span className="float-end"> <AddFriend/> </span>
           </div>

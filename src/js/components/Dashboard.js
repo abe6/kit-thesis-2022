@@ -32,7 +32,7 @@ export default function Dashboard() {
                 <h1 className='ms-auto ps-5'>{title}</h1>
 
                 <Dropdown className='ms-auto'>
-                    <Dropdown.Toggle as={Image} src='https://via.placeholder.com/50' roundedCircle />
+                    <Dropdown.Toggle as={Image} roundedCircle height={50} width={50} src={currentUser.photoURL ?? "https://via.placeholder.com/50"} />
 
                     <Dropdown.Menu>
                         <Dropdown.Item as={Link} to="/update-profile"> Update profile </Dropdown.Item>

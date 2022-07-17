@@ -1,4 +1,4 @@
-import { useState, useEffect, useBetween } from "react"
+import { useState, useEffect } from "react"
 import { Card, Alert } from 'react-bootstrap'
 import { useFirestore } from "../firebase/firestore"
 import SendMessage from "./SendMessage"
@@ -8,25 +8,34 @@ export default function Contact(props) {
 
     const [error, setError] = useState('')
     const [userData, setUserData] = useState({})
+    const [sendMessage, setSendMessage] = useState(false)
 
     // Runs once to retrieve the user (contacts) data
     useEffect(() => {
-        getUserData(props.uid).then(data => setUserData(data)).catch( error => setError(error))
+        getUserData(props.uid).then(resp => setUserData(resp.data)).catch( error => setError(error))
     }, [])
     
-    function handleClick(e) {
+    function showSendMessage(e) {
         e.preventDefault()
-
-        console.log('todo: send message on contact click')
+        setSendMessage(true)
     }
 
-    return (
-        <Card className="m-1 mb-3" onClick={handleClick} style={{ cursor: "pointer" }}>
-            <Card.Img variant="top" src="https://via.placeholder.com/150" />
+    function hideSendMessage(){ setSendMessage(false) }
 
-            <SendMessage name={userData.displayName} uid={props.uid}/>
+    return (
+        <Card className="m-1 mb-3" style={{ cursor: "pointer" }}>
+            <div style={{width:100, height:100}} className='overflow-hidden'>
+                <Card.Img onClick={showSendMessage} variant="top" src={userData.photoURL ?? "https://via.placeholder.com/100"} />
+            </div>
+
+            <SendMessage 
+                show={sendMessage} 
+                handleClose={hideSendMessage} 
+                name={userData.displayName} 
+                uid={props.uid}
+            />
         
-            <Card.Body>
+            <Card.Body onClick={showSendMessage}>
                 {error && <Alert variant='danger'>{error}</Alert>}
                 <Card.Title className="text-center">{userData.displayName || 'No name'}</Card.Title>
             </Card.Body>

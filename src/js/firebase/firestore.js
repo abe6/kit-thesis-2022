@@ -19,6 +19,12 @@ export function FirestoreProvider({children}) {
         return doc(db, "users", userId)
     }
 
+    async function getUserData(uid = currentUser.uid) {
+        const docRef = doc(db, "users", uid)
+        const docSnap = await getDoc(docRef)
+        return docSnap.data();
+    }
+
     function updateUserData() {
 
         const userData = {
@@ -27,8 +33,8 @@ export function FirestoreProvider({children}) {
             photoURL: currentUser.photoURL
         }
 
-        return setDoc(doc(db, "users", currentUser.uid), {
-            data: userData
+        return updateDoc(doc(db, "users", currentUser.uid), {
+            data: userData,
         });
         
     }
@@ -39,12 +45,6 @@ export function FirestoreProvider({children}) {
                 email: email
             }
           });
-    }
-
-    async function getUserData(uid) {
-        const docRef = doc(db, "users", uid)
-        const docSnap = await getDoc(docRef)
-        return docSnap.data().data;
     }
 
     async function addFriend(email){
