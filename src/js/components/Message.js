@@ -40,7 +40,7 @@ export default function Message(props) {
     function hideSendMessage(){ setSendMessage(false) }
 
     return (
-        <Card className="m-1 mb-3 w-25" border={borderColor}>
+        <Card className="m-1" border={borderColor} style={{minWidth:300, minHeight:300}}>
             <Card.Body>
                 <Card.Title>From: {userData.displayName || 'No name'}</Card.Title>
                 <Card.Subtitle className="text-muted">{sentAt.toLocaleString()}</Card.Subtitle>
@@ -53,6 +53,7 @@ export default function Message(props) {
             </Card.Body>
             <Card.Footer className={"border-top border-"+borderColor}>
                 <Row className="d-flex align-items-center justify-content-end">
+                    <Col md="auto"> <Button size="sm" variant="" onClick={onRemove}>Delete</Button> </Col>
                     <Col md="auto"> 
                         <SendMessage 
                             show={sendMessage} 
@@ -63,7 +64,6 @@ export default function Message(props) {
                             btntext="Reply"
                         /> 
                     </Col>
-                    <Col md="auto"> <Button size="sm" variant="primary" onClick={onRemove}>Delete</Button> </Col>
                 </Row>
             </Card.Footer>
         </Card>

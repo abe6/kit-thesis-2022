@@ -23,8 +23,8 @@ export default function Contact(props) {
     function hideSendMessage(){ setSendMessage(false) }
 
     return (
-        <Card className="m-1 mb-3" style={{ cursor: "pointer" }}>
-            <div style={{width:100, height:100}} className='overflow-hidden'>
+        <Card className="m-1" style={{ minWidth:150 }}>
+            <div style={{width:150, height:150}} className='overflow-hidden'>
                 <Card.Img onClick={showSendMessage} variant="top" src={userData.photoURL ?? "https://via.placeholder.com/100"} />
             </div>
 

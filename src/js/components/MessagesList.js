@@ -34,7 +34,7 @@ export default function MessagesList() {
     }, [])
     
     return (
-      <Card className="w-100">
+      <Card className="w-100" style={{minHeight:375}}>
         {error && <Alert variant='danger'>{error}</Alert>}
 
         <Card.Header as="h4">
@@ -52,16 +52,14 @@ export default function MessagesList() {
         </Card.Header>
         
         <Card.Body className="">
-          <div className='overflow-scroll' >
-            <div className="vw-100 d-flex flex-row overflow-auto">
-              {
-                messagesList.map((mes, i) => {
-                  return (
-                    <Message message={mes} key={i}/>
-                  )
-                })
-              } 
-            </div>
+          <div className="d-flex flex-row flex-nowrap overflow-auto">
+            {
+              messagesList.map((mes, i) => {
+                return (
+                  <Message message={mes} key={i}/>
+                )
+              })
+            } 
           </div>
         </Card.Body>
       </Card>
