@@ -17,13 +17,15 @@ export default function SendMessage(props) {
     const [friendsOptions, setFriendsOptions] = useState([])
 
     
-    // Runs once to retrieve the users friends
     useEffect(() => {
+        // Runs once to retrieve the users friends if a target uid has not been given
         if (!props.uid){
             getUserData().then(resp => {
+                // Map each friends uid to a user data object
                 Promise.all(Object.values(resp.friends).map(uid => {
                     return getDoc(getUserSnapshot(uid))
                 })).then(users => {
+                    // Map each user data object to a dropdown option with their display anme
                     const options = users.map( (user, i) => {
                         return <option value={user.id} key={i}>{user.data().data.displayName}</option>
                     })
@@ -55,60 +57,45 @@ export default function SendMessage(props) {
         
     }
 
-    function getModalForContact() {
+    function getTitle() { return (props.name) ? `Send a new message to ${props.name}` : "Send a new message"}
+
+    function getTargetPicker() {
+        if (props.uid) return
+
         return (
-            <Modal show={props.show} onHide={onHideFunc} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Send a message to {props.name}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {message && <Alert variant='success'>{message}</Alert>}
-                    {error && <Alert variant='danger'>{error}</Alert>}
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Label>What is your message?</Form.Label>
-                        <Form.Control as="textarea" ref={newMessageTextRef} required />
-                        <Button className='w-100 mt-2' type="submit" disabled={loading}>Send!</Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
+            <>
+                <Form.Label>Who would you like to send a message to?</Form.Label>
+                <Form.Control as="select" defaultValue={''} ref={targetUidRef} required className="mb-2">
+                    <option disabled hidden key='placeholder' value=''>Choose a friend</option>
+                    {friendsOptions}
+                </Form.Control>
+            </>
         )
     }
-
-    function getEmptyModal() {
-        return (
-            <Modal show={props.show} onHide={onHideFunc} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Send a new message</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {message && <Alert variant='success'>{message}</Alert>}
-                    {error && <Alert variant='danger'>{error}</Alert>}
-                    <Form onSubmit={handleSubmit}>
-
-                        <Form.Label>Who would you like to send a message to?</Form.Label>
-                        <Form.Control as="select" defaultValue={'placeholder'} ref={targetUidRef} required>
-                            <option disabled hidden key='placeholder' value='placeholder'>Choose a friend</option>
-                            {friendsOptions}
-                        </Form.Control>
-
-                        <Form.Label className="mt-2">What is your message?</Form.Label>
-                        <Form.Control as="textarea" ref={newMessageTextRef} required />
-
-                        <Button className='w-100 mt-2' type="submit" disabled={loading}>Send!</Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-        )
-    }
-
-    const modalToDisplay = (props.uid) ? getModalForContact() : getEmptyModal()
 
     return (
         <>
             {/* Button to open the dialog only  appears if props.btntext is set */}
             <Button  size="sm" hidden={!props.btntext} onClick={onShowFunc}>{props.btntext}</Button>
-            
-            {modalToDisplay}
+
+            <Modal show={props.show} onHide={onHideFunc} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{getTitle()}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {message && <Alert variant='success'>{message}</Alert>}
+                    {error && <Alert variant='danger'>{error}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+
+                        {getTargetPicker()}
+
+                        <Form.Label>What is your message?</Form.Label>
+                        <Form.Control as="textarea" ref={newMessageTextRef} required />
+
+                        <Button type="submit" disabled={loading}>Send!</Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
             
         </>
     );
