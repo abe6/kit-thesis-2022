@@ -10,6 +10,9 @@ import ForgotPassword from './components/ForgotPassword';
 import UpdateProfile from './components/UpdateProfile';
 import { FirestoreProvider } from './firebase/firestore';
 import { StorageProvider } from './firebase/storage';
+import SendTextMessage from './components/SendTextMessage';
+import SendVideoMessage from './components/SendVideoMessage';
+import SendAudioMessage from './components/SendAudioMessage';
 
 function App() {
 
@@ -29,6 +32,21 @@ function App() {
                   <Route path="/update-profile" element={
                     <PrivateRoute>
                       <UpdateProfile/>
+                    </PrivateRoute>
+                  }/>
+                  <Route path="/text-message" element={
+                    <PrivateRoute>
+                      <SendTextMessage/>
+                    </PrivateRoute>
+                  }/>
+                  <Route path="/video-message" element={
+                    <PrivateRoute>
+                      <SendVideoMessage/>
+                    </PrivateRoute>
+                  }/>
+                  <Route path="/audio-message" element={
+                    <PrivateRoute>
+                      <SendAudioMessage/>
                     </PrivateRoute>
                   }/>
 
