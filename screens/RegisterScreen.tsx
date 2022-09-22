@@ -13,7 +13,7 @@ import { useFirestore } from "../firebase/firestore";
 import { RFPercentage } from "react-native-responsive-fontsize";
 
 export default function RegisterScreen() {
-  const { register } = useAuthentication();
+  const { register, changeProfile } = useAuthentication();
   const { createUserDoc } = useFirestore();
 
   const [error, setError] = useState<any>();
@@ -55,6 +55,7 @@ export default function RegisterScreen() {
     register(emailInput, passwordInput)
       .then((credentials) => {
         createUserDoc(
+          // Updates db
           credentials.user.uid,
           credentials.user.email,
           displayNameInput

@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
 
   header: {
     alignItems: "center",
-    width: "50%",
+    height: "40%",
     marginTop: 20,
     borderBottomColor: "lightgray",
     borderBottomWidth: 0.5,
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   },
 
   userPicture: {
-    width: "80%",
+    height: "80%",
     aspectRatio: 1,
     resizeMode: "contain",
   },

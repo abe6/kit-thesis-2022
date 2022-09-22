@@ -58,6 +58,7 @@ export default function FriendsList() {
             horizontal
             data={friendsUidList}
             renderItem={FriendItem}
+            keyExtractor={(item) => item}
             ListEmptyComponent={EmptyFriend}
             showsHorizontalScrollIndicator={false}
           />

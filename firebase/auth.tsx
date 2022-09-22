@@ -65,7 +65,10 @@ export function useAuthentication() {
     }
   }
 
-  function changeProfile(newName: string, newPhotoUrl: string): Promise<void> {
+  function changeProfile(
+    newName: string,
+    newPhotoUrl: string = ""
+  ): Promise<void> {
     if (currentUser) {
       return updateProfile(currentUser, {
         displayName: newName,

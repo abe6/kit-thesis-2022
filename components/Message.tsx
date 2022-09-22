@@ -14,6 +14,7 @@ import { Video } from "expo-av";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useStorage } from "../firebase/storage";
 import { RFPercentage } from "react-native-responsive-fontsize";
+import TimeAgo from "react-native-timeago";
 
 export function Message({ message, openModal }) {
   const sentAt = new Date(message.sentAt);
@@ -126,8 +127,15 @@ export function Message({ message, openModal }) {
       <View style={style.header}>
         <View>
           <Text style={style.fromText}>From</Text>
-          <Text style={style.senderName}>{userData.displayName}</Text>
-          <Text style={style.sentAtText}>{sentAt.toLocaleString()}</Text>
+          <View style={style.senderRow}>
+            <Text style={style.senderName}>{userData.displayName}</Text>
+            <Image
+              style={style.userPicture}
+              source={{ uri: userData.photoURL }}
+            />
+          </View>
+          {/* <Text style={style.sentAtText}>{sentAt.toLocaleString()}</Text> */}
+          <TimeAgo time={sentAt} />
         </View>
         <Pressable onPress={onDelete}>
           <Ionicons name="trash" size={28} color="black" />
@@ -223,9 +231,19 @@ const style = StyleSheet.create({
     color: "gray",
     fontSize: 10,
   },
+  senderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   senderName: {
     fontWeight: "bold",
     fontSize: 24,
+  },
+  userPicture: {
+    height: RFPercentage(2),
+    aspectRatio: 1,
+    borderRadius: RFPercentage(2),
+    marginLeft: 10,
   },
   sentAtText: {
     color: "gray",

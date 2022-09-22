@@ -15,11 +15,19 @@ export default function DashboardScreen({ navigation }) {
 
   // Add a listener to run whenever the screen is mounted
   useEffect(() => {
-    setTitle(currentUser ? `Welcome, ${currentUser.displayName}` : "Welcome");
+    setTitle(
+      currentUser && currentUser.displayName
+        ? `Welcome, ${currentUser.displayName}`
+        : "Welcome"
+    );
 
     return navigation.addListener("focus", () => {
       // Update the name as it may of changed
-      setTitle(currentUser ? `Welcome, ${currentUser.displayName}` : "Welcome");
+      setTitle(
+        currentUser && currentUser.displayName
+          ? `Welcome, ${currentUser.displayName}`
+          : "Welcome"
+      );
     });
   }, [navigation, currentUser]);
 

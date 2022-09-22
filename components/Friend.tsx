@@ -1,4 +1,12 @@
-import { Text, View, StyleSheet, Pressable, Image, Alert } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Pressable,
+  Image,
+  Alert,
+  Dimensions,
+} from "react-native";
 import { useState, useEffect } from "react";
 import { useFirestore } from "../firebase/firestore";
 import { onSnapshot } from "firebase/firestore";
@@ -102,7 +110,7 @@ export function EmptyFriend() {
         {
           justifyContent: "center",
           alignItems: "center",
-          width: "100%",
+          width: Dimensions.get("window").width - 37,
           paddingVertical: 40,
           paddingHorizontal: 40,
           marginRight: 20,
@@ -111,7 +119,7 @@ export function EmptyFriend() {
     >
       <Text
         style={{
-          fontSize: 32,
+          fontSize: RFPercentage(2),
           fontWeight: "bold",
           marginBottom: 10,
           textAlign: "center",
@@ -119,7 +127,7 @@ export function EmptyFriend() {
       >
         You currently have no contacts
       </Text>
-      <Text style={{ fontSize: 16, textAlign: "center" }}>
+      <Text style={{ fontSize: RFPercentage(1.5), textAlign: "center" }}>
         Add a new friend now
       </Text>
     </View>
@@ -159,7 +167,7 @@ const style = StyleSheet.create({
   },
 
   contactName: {
-    fontSize: RFPercentage(2),
+    fontSize: RFPercentage(2.5),
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 2,
