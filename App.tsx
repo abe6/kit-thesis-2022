@@ -12,6 +12,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import ForgotPasswordScreen from "./screens/ForgotPassword";
 import DashboardScreen from "./screens/DashboardScreen";
 import UpdateProfileScreen from "./screens/UpdateProfileScreen";
+import MetricsScreen from "./screens/MetricsScreen";
 import SendTextMessageScreen from "./screens/SendTextMessageScreen";
 import SendAudioMessageScreen from "./screens/SendAudioMessageScreen";
 import SendVideoMessageScreen from "./screens/SendVideoMessageScreen";
@@ -21,7 +22,7 @@ import {
   SafeAreaView,
   View,
   StyleSheet,
-  Image,
+  LogBox,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { RFPercentage } from "react-native-responsive-fontsize";
@@ -31,6 +32,7 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
   const { currentUser, logout } = useAuthentication();
+  LogBox.ignoreAllLogs();
 
   function confirmLogout() {
     Alert.alert(
@@ -123,6 +125,16 @@ export default function App() {
               title: "Update profile",
               drawerIcon: ({ size, color }) => (
                 <Ionicons name="person" size={size} color={color} />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="MetricsScreen"
+            component={MetricsScreen}
+            options={{
+              title: "Metrics",
+              drawerIcon: ({ size, color }) => (
+                <Ionicons name="stats-chart" size={size} color={color} />
               ),
             }}
           />

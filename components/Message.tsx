@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   Pressable,
+  Dimensions,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useFirestore } from "../firebase/firestore";
@@ -126,16 +127,17 @@ export function Message({ message, openModal }) {
     <View style={style.container}>
       <View style={style.header}>
         <View>
-          <Text style={style.fromText}>From</Text>
           <View style={style.senderRow}>
-            <Text style={style.senderName}>{userData.displayName}</Text>
             <Image
               style={style.userPicture}
               source={{ uri: userData.photoURL }}
             />
+            <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+              <Text style={style.senderName}>{userData.displayName}</Text>
+              <TimeAgo style={style.sentAtText} time={sentAt} />
+            </View>
           </View>
           {/* <Text style={style.sentAtText}>{sentAt.toLocaleString()}</Text> */}
-          <TimeAgo time={sentAt} />
         </View>
         <Pressable onPress={onDelete}>
           <Ionicons name="trash" size={28} color="black" />
@@ -197,7 +199,7 @@ export function EmptyMessage() {
   );
 }
 
-const style = StyleSheet.create({
+const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
@@ -205,11 +207,11 @@ const style = StyleSheet.create({
     width: 375,
     margin: 15,
     marginEnd: 0,
-    paddingVertical: 20,
+    paddingTop: 15,
+    paddingBottom: 20,
     paddingHorizontal: 20,
     backgroundColor: "white",
     borderRadius: 15,
-    padding: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -227,27 +229,24 @@ const style = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: "lightgray",
   },
-  fromText: {
-    color: "gray",
-    fontSize: 10,
-  },
   senderRow: {
     flexDirection: "row",
     alignItems: "center",
   },
   senderName: {
     fontWeight: "bold",
-    fontSize: 24,
+    fontSize: RFPercentage(3),
   },
   userPicture: {
-    height: RFPercentage(2),
+    height: RFPercentage(4),
     aspectRatio: 1,
     borderRadius: RFPercentage(2),
-    marginLeft: 10,
+    marginRight: 10,
   },
   sentAtText: {
     color: "gray",
-    fontSize: 12,
+    fontSize: RFPercentage(1.2),
+    marginLeft: 10,
   },
 
   body: {
@@ -273,6 +272,25 @@ const style = StyleSheet.create({
     backgroundColor: "whitesmoke",
     alignItems: "center",
   },
+  visualMedia: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    borderRadius: 10,
+  },
+});
+
+const mobileStyles = StyleSheet.create({
+  mediaWrapper: {
+    height: "100%",
+    width: "60%",
+    paddingTop: 15,
+    paddingRight: 15,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+const tabletStyles = StyleSheet.create({
   mediaWrapper: {
     height: "100%",
     aspectRatio: 3 / 4,
@@ -281,10 +299,11 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  visualMedia: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
-    borderRadius: 10,
-  },
 });
+
+const IS_MOBILE = Dimensions.get("window").width < 800;
+const combined = IS_MOBILE
+  ? { ...commonStyles, ...mobileStyles }
+  : { ...commonStyles, ...tabletStyles };
+
+const style = StyleSheet.create(combined);

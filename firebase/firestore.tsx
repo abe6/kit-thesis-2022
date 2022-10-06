@@ -111,6 +111,9 @@ export function useFirestore() {
         status: "inbox",
         mediaType: realMediaType,
       }),
+    }).then(() => {
+      messageSentMetric(currentUser.uid);
+      messageReceivedMetric(uid);
     });
   }
 
@@ -124,6 +127,39 @@ export function useFirestore() {
     });
   }
 
+  async function messageSentMetric(uid: string) {
+    const userSnapshot = getUserSnapshot(uid);
+    await updateDoc(userSnapshot, {
+      "metrics.messages_sent": arrayUnion(Date.now()),
+    });
+  }
+
+  async function messageReceivedMetric(uid: string) {
+    const userSnapshot = getUserSnapshot(uid);
+    await updateDoc(userSnapshot, {
+      "metrics.messages_received": arrayUnion(Date.now()),
+    });
+  }
+
+  async function shareWithFriend(email: string) {
+    let snapshot = null;
+
+    const allUsersSnapshot = await getDocs(collection(db, "users"));
+    allUsersSnapshot.forEach((doc) => {
+      if (doc.data().data.email === email) {
+        snapshot = doc.ref;
+      }
+    });
+
+    if (snapshot) {
+      await updateDoc(snapshot, {
+        "metrics.shared": arrayUnion(currentUser?.uid),
+      });
+    } else {
+      throw new Error("User not found");
+    }
+  }
+
   return {
     getUserSnapshot,
     updateUserData,
@@ -133,5 +169,6 @@ export function useFirestore() {
     addMessageTo,
     removeMessageFrom,
     removeFriend,
+    shareWithFriend,
   };
 }
