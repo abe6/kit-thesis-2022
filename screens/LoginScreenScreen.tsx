@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { useAuthentication } from "../firebase/auth";
 import { RFPercentage } from "react-native-responsive-fontsize";
+import KeyboardShift from "../components/KeyboardShift";
 
 export default function LoginScreen({ navigation }) {
   const { login } = useAuthentication();
@@ -47,7 +48,7 @@ export default function LoginScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardShift style={styles.container}>
       {error ? (
         <View style={styles.error}>
           <Text>{error}</Text>
@@ -57,7 +58,7 @@ export default function LoginScreen({ navigation }) {
       )}
       <Text style={styles.title}>K.i.T</Text>
 
-      <KeyboardAvoidingView behavior="padding" style={styles.inputsView}>
+      <View style={styles.inputsView}>
         <TextInput
           style={styles.input}
           onChangeText={setEmailInput}
@@ -82,12 +83,12 @@ export default function LoginScreen({ navigation }) {
         >
           <Text style={styles.mutedText}>Forgot Password?</Text>
         </TouchableOpacity>
-      </KeyboardAvoidingView>
+      </View>
 
       <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
         <Text style={styles.register}>Register Now</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </KeyboardShift>
   );
 }
 

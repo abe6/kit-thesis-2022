@@ -67,7 +67,7 @@ export function useFirestore() {
 
     if (id) {
       const currentUserSnapshot = getUserSnapshot(currentUser.uid);
-      await updateDoc(currentUserSnapshot, {
+      return updateDoc(currentUserSnapshot, {
         friends: arrayUnion(id),
       });
     } else {

@@ -7,9 +7,11 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFirestore } from "../firebase/firestore";
+import KeyboardShift from "./KeyboardShift";
+import { ScrollView } from "react-native-gesture-handler";
 
 export function useAddFriendModal() {
   const { addFriend } = useFirestore();
@@ -20,7 +22,7 @@ export function useAddFriendModal() {
 
   let emailInput = "";
 
-  function openModal(targetUid = "") {
+  function openModal() {
     setModalMessage("");
     setModalVisible(true);
     setLoading(false);
@@ -31,7 +33,7 @@ export function useAddFriendModal() {
       setModalMessage("Please input an email");
       return;
     }
-    setLoading(true);
+    // setLoading(true);
 
     addFriend(emailInput.toLowerCase())
       .then(() => {
@@ -39,64 +41,71 @@ export function useAddFriendModal() {
       })
       .catch((error) => {
         setModalMessage(error.message);
-      })
-      .finally(() => {
-        setLoading(false);
+        // setLoading(false);
       });
   }
 
   function AddFriendModal() {
     return (
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <Pressable
-          onPress={() => setModalVisible(false)}
-          style={styles.centeredView}
-        >
-          <View style={styles.modalView}>
-            <View style={styles.modalHeaderWrapper}>
-              <Text style={styles.header}>Add a Friend</Text>
-              <Pressable onPress={() => setModalVisible(false)}>
-                <Ionicons name="close-circle-outline" size={36} color="black" />
-              </Pressable>
-            </View>
-
-            <View style={styles.modalBodyWrapper}>
-              <Text style={{ fontSize: 18 }}>What is your friends email?</Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={(e) => (emailInput = e)}
-                placeholder="Your friends email"
-                keyboardType="email-address"
-              />
-            </View>
-
+      <View>
+        {modalVisible && (
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}
+          >
             <Pressable
-              style={styles.addFriendButton}
-              onPress={handleSubmit}
-              disabled={loading}
+              onPress={() => setModalVisible(false)}
+              style={styles.centeredView}
             >
-              <Text style={styles.addFriendText}>Add Friend</Text>
-            </Pressable>
-            {loading ? (
-              <ActivityIndicator style={{ marginTop: 10 }} color="green" />
-            ) : (
-              <></>
-            )}
+              <View style={styles.modalView}>
+                <View style={styles.modalHeaderWrapper}>
+                  <Text style={styles.header}>Add a Friend</Text>
+                  <Pressable onPress={() => setModalVisible(false)}>
+                    <Ionicons
+                      name="close-circle-outline"
+                      size={36}
+                      color="black"
+                    />
+                  </Pressable>
+                </View>
+                <View style={styles.modalBodyWrapper}>
+                  <Text style={{ fontSize: 18 }}>
+                    What is your friends email?
+                  </Text>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(e) => (emailInput = e)}
+                    placeholder="Your friends email"
+                    keyboardType="email-address"
+                  />
+                </View>
+                <Pressable
+                  style={styles.addFriendButton}
+                  onPress={handleSubmit}
+                  disabled={loading}
+                >
+                  <Text style={styles.addFriendText}>Add Friend</Text>
+                </Pressable>
 
-            {/* Modal error */}
-            {modalMessage ? (
-              <Text style={styles.modalError}>{modalMessage}</Text>
-            ) : (
-              <></>
-            )}
-          </View>
-        </Pressable>
-      </Modal>
+                {/* {loading ? (
+                  <ActivityIndicator style={{ marginTop: 10 }} color="green" />
+                ) : (
+                  <></>
+                )} */}
+
+                {/* Modal error */}
+                {modalMessage ? (
+                  <Text style={styles.modalError}>{modalMessage}</Text>
+                ) : (
+                  <></>
+                )}
+              </View>
+            </Pressable>
+          </Modal>
+        )}
+      </View>
     );
   }
 
@@ -109,7 +118,7 @@ export function useAddFriendModal() {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: "center",
+    paddingTop: "10%",
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.6)",
   },

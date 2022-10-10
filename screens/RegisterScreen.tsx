@@ -6,11 +6,14 @@ import {
   TextInput,
   Pressable,
   SafeAreaView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useState } from "react";
 import { useAuthentication } from "../firebase/auth";
 import { useFirestore } from "../firebase/firestore";
 import { RFPercentage } from "react-native-responsive-fontsize";
+import KeyboardShift from "../components/KeyboardShift";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function RegisterScreen() {
   const { register, changeProfile } = useAuthentication();
@@ -79,47 +82,50 @@ export default function RegisterScreen() {
         <></>
       )}
 
-      <Text style={styles.title}>K.i.T</Text>
+      <KeyboardShift>
+        <ScrollView>
+          <Text style={styles.title}>K.i.T</Text>
+          <View style={styles.inputsView}>
+            <TextInput
+              style={styles.input}
+              onChangeText={setEmailInput}
+              placeholder="Your email"
+              keyboardType="email-address"
+            />
 
-      <View style={styles.inputsView}>
-        <TextInput
-          style={styles.input}
-          onChangeText={setEmailInput}
-          placeholder="Your email"
-          keyboardType="email-address"
-        />
+            <TextInput
+              style={styles.input}
+              onChangeText={setDisplayNameInput}
+              placeholder="Display name"
+              keyboardType="default"
+            />
 
-        <TextInput
-          style={styles.input}
-          onChangeText={setDisplayNameInput}
-          placeholder="Display name"
-          keyboardType="default"
-        />
+            <TextInput
+              style={styles.input}
+              onChangeText={setPasswordInput}
+              placeholder="Password"
+              keyboardType="default"
+              secureTextEntry={true}
+            />
 
-        <TextInput
-          style={styles.input}
-          onChangeText={setPasswordInput}
-          placeholder="Password"
-          keyboardType="default"
-          secureTextEntry={true}
-        />
+            <TextInput
+              style={styles.input}
+              onChangeText={setPasswordConfirmInput}
+              placeholder="Confirm Password"
+              keyboardType="default"
+              secureTextEntry={true}
+            />
 
-        <TextInput
-          style={styles.input}
-          onChangeText={setPasswordConfirmInput}
-          placeholder="Confirm Password"
-          keyboardType="default"
-          secureTextEntry={true}
-        />
-
-        <Pressable
-          style={styles.submit}
-          onPress={handleSubmit}
-          disabled={loading}
-        >
-          <Text style={{ fontSize: 24 }}>Sign Up</Text>
-        </Pressable>
-      </View>
+            <Pressable
+              style={styles.submit}
+              onPress={handleSubmit}
+              disabled={loading}
+            >
+              <Text style={{ fontSize: 24 }}>Sign Up</Text>
+            </Pressable>
+          </View>
+        </ScrollView>
+      </KeyboardShift>
     </SafeAreaView>
   );
 }

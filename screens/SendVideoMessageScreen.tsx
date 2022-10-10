@@ -45,6 +45,7 @@ export default function SendVideoMessageScreen({ route }) {
       const { status: statusMic } =
         await Camera.requestMicrophonePermissionsAsync();
       setHasPermission(statusCamera === "granted" && statusMic === "granted");
+      // setHasPermission(true);
     })();
   }, []);
 
