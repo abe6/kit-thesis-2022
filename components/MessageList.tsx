@@ -4,6 +4,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { useAuthentication } from "../firebase/auth";
 import { useState, useEffect } from "react";
@@ -11,6 +12,7 @@ import { useFirestore } from "../firebase/firestore";
 import { onSnapshot } from "firebase/firestore";
 import { Message, EmptyMessage } from "./Message";
 import { useNewMessageModal } from "./NewMessageModal";
+import { RFPercentage } from "react-native-responsive-fontsize";
 
 export default function MessageList() {
   const { getUserSnapshot } = useFirestore();
@@ -19,6 +21,8 @@ export default function MessageList() {
 
   const [messagesList, setMessagesList] = useState([]);
   const [error, setError] = useState("");
+
+  const IS_MOBILE = Dimensions.get("window").width < 800;
 
   useEffect(() => {
     if (!currentUser) return;
@@ -54,15 +58,15 @@ export default function MessageList() {
       <View style={styles.headerWrapper}>
         <Text style={styles.header}>
           Your Messages{" "}
-          <Text style={{ color: "lightgray", fontSize: 18 }}>
-            ({messagesList.length})
-          </Text>
+          <Text style={styles.messageCountText}>({messagesList.length})</Text>
         </Text>
         <TouchableOpacity
           style={styles.openModalButton}
           onPress={() => openModal()}
         >
-          <Text style={styles.openModalButtonText}>New Message</Text>
+          <Text style={styles.openModalButtonText}>
+            {IS_MOBILE ? "Send +" : "New Message"}
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -98,14 +102,17 @@ const styles = StyleSheet.create({
 
   header: {
     fontWeight: "bold",
-    fontSize: 24,
+    fontSize: RFPercentage(3.5),
   },
 
   listContainer: {
     height: "100%",
     width: "100%",
   },
-
+  messageCountText: {
+    color: "lightgray",
+    fontSize: RFPercentage(2),
+  },
   openModalButton: {
     backgroundColor: "dodgerblue",
     paddingVertical: 5,
@@ -114,7 +121,7 @@ const styles = StyleSheet.create({
   },
   openModalButtonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: RFPercentage(2.8),
     fontWeight: "bold",
   },
 });

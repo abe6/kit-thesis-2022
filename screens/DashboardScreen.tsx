@@ -63,7 +63,7 @@ const tabletStyles = {
     marginBottom: 5,
   },
   messageListWrapper: {
-    height: "60%",
+    height: "65%",
   },
 };
 

@@ -15,6 +15,7 @@ import { Camera, CameraType } from "expo-camera";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useFirestore } from "../firebase/firestore";
 import { useStorage } from "../firebase/storage";
+import { RFPercentage } from "react-native-responsive-fontsize";
 
 const IS_MOBILE = Dimensions.get("window").width < 800;
 
@@ -125,7 +126,12 @@ export default function SendTextMessageScreen({ route }) {
               onPress={handleImageAction}
               style={loading ? styles.button : [styles.button, styles.shadow]}
             >
-              <Text style={image ? { color: "red" } : { color: "green" }}>
+              <Text
+                style={[
+                  styles.buttonText,
+                  image ? { color: "red" } : { color: "green" },
+                ]}
+              >
                 {image ? "Remove Image" : "Capture Image"}
               </Text>
             </Pressable>
@@ -134,14 +140,14 @@ export default function SendTextMessageScreen({ route }) {
               onPress={() => navigation.goBack()}
               style={loading ? styles.button : [styles.button, styles.shadow]}
             >
-              <Text style={{ color: "blue" }}>Back</Text>
+              <Text style={[styles.buttonText, { color: "blue" }]}>Back</Text>
             </Pressable>
             <Pressable
               disabled={loading}
               onPress={sendMessage}
               style={loading ? styles.button : [styles.button, styles.shadow]}
             >
-              <Text style={{ color: "green" }}>Send</Text>
+              <Text style={[styles.buttonText, { color: "green" }]}>Send</Text>
             </Pressable>
           </View>
         </View>
@@ -189,6 +195,9 @@ const mobileStyles = {
     width: "90%",
     height: "72%",
   },
+  buttonText: {
+    fontSize: RFPercentage(2),
+  },
 };
 
 const tabletStyles = {
@@ -215,6 +224,9 @@ const tabletStyles = {
   camera: {
     width: "100%",
     height: "100%",
+  },
+  buttonText: {
+    fontSize: RFPercentage(2.5),
   },
 };
 

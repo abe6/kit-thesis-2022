@@ -17,6 +17,7 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useFirestore } from "../firebase/firestore";
 import { useStorage } from "../firebase/storage";
 import { Video } from "expo-av";
+import { RFPercentage } from "react-native-responsive-fontsize";
 
 const IS_MOBILE = Dimensions.get("window").width < 800;
 
@@ -252,6 +253,9 @@ const mobileStyles = {
     width: "90%",
     height: "72%",
   },
+  buttonText: {
+    fontSize: RFPercentage(2),
+  },
 };
 
 const tabletStyles = {
@@ -278,6 +282,9 @@ const tabletStyles = {
   camera: {
     width: "100%",
     height: "100%",
+  },
+  buttonText: {
+    fontSize: RFPercentage(2.5),
   },
 };
 

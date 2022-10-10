@@ -158,7 +158,9 @@ export default function SendAudioMessageScreen({ route }) {
                 }
                 disabled={!enableMicRecordButton}
               >
-                <Text>Start new recording</Text>
+                <Text style={styles.recordButtonstext}>
+                  Start new recording
+                </Text>
               </Pressable>
             </View>
             <View style={styles.micCell}>
@@ -171,7 +173,7 @@ export default function SendAudioMessageScreen({ route }) {
                 }
                 disabled={enableMicRecordButton}
               >
-                <Text>Stop recording</Text>
+                <Text style={styles.recordButtonstext}>Stop recording</Text>
               </Pressable>
             </View>
           </View>
@@ -186,7 +188,7 @@ export default function SendAudioMessageScreen({ route }) {
                 }
                 disabled={!enableMicPlayButton}
               >
-                <Text>Play</Text>
+                <Text style={styles.recordButtonstext}>Play</Text>
               </Pressable>
             </View>
             <View style={styles.micCell}>
@@ -199,7 +201,7 @@ export default function SendAudioMessageScreen({ route }) {
                 }
                 disabled={!enableMicPauseButton}
               >
-                <Text>Pause</Text>
+                <Text style={styles.recordButtonstext}>Pause</Text>
               </Pressable>
             </View>
           </View>
@@ -336,6 +338,9 @@ const mobileStyles = {
   micButtonWrapper: {
     width: "90%",
   },
+  buttonText: {
+    fontSize: RFPercentage(2),
+  },
 };
 
 const tabletStyles = {
@@ -373,6 +378,9 @@ const tabletStyles = {
   },
   micButtonWrapper: {
     width: "60%",
+  },
+  buttonText: {
+    fontSize: RFPercentage(2.5),
   },
 };
 
@@ -444,6 +452,9 @@ const commonStyles = {
   micCell: {
     alignItems: "center",
     width: "50%",
+  },
+  recordButtonstext: {
+    fontSize: RFPercentage(2),
   },
 };
 

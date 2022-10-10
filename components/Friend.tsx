@@ -86,7 +86,7 @@ export function Friend({ uid }) {
             >
               <Text
                 adjustsFontSizeToFit
-                numberOfLines={2}
+                numberOfLines={1}
                 style={style.contactName}
               >
                 {userData.displayName}
@@ -170,7 +170,7 @@ const style = StyleSheet.create({
     fontSize: RFPercentage(2.5),
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 2,
+    marginBottom: 0,
     marginTop: 5,
   },
 });

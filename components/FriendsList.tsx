@@ -5,6 +5,7 @@ import { useAuthentication } from "../firebase/auth";
 import { useFirestore } from "../firebase/firestore";
 import { Friend, EmptyFriend } from "./Friend";
 import { useAddFriendModal } from "./AddFriendModal";
+import { RFPercentage } from "react-native-responsive-fontsize";
 
 export default function FriendsList() {
   const { getUserSnapshot } = useFirestore();
@@ -42,9 +43,7 @@ export default function FriendsList() {
       <View style={styles.headerWrapper}>
         <Text style={styles.header}>
           Your Friends{" "}
-          <Text style={{ color: "lightgray", fontSize: 18 }}>
-            ({friendsUidList.length})
-          </Text>
+          <Text style={styles.messageCountText}>({friendsUidList.length})</Text>
         </Text>
         <Pressable style={styles.openModalButton} onPress={() => openModal()}>
           <Text style={styles.openModalButtonText}>Add Friend</Text>
@@ -83,14 +82,17 @@ const styles = StyleSheet.create({
 
   header: {
     fontWeight: "bold",
-    fontSize: 24,
+    fontSize: RFPercentage(3.5),
   },
 
   listContainer: {
     height: "100%",
     width: "100%",
   },
-
+  messageCountText: {
+    color: "lightgray",
+    fontSize: RFPercentage(2),
+  },
   openModalButton: {
     backgroundColor: "dodgerblue",
     paddingVertical: 5,
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
   },
   openModalButtonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: RFPercentage(2.8),
     fontWeight: "bold",
   },
 });

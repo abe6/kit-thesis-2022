@@ -162,7 +162,7 @@ export function Message({ message, openModal }) {
         style={style.replyButton}
         onPress={() => openModal({ ...userData, uid: message.sender })}
       >
-        <Text>Reply</Text>
+        <Text style={{ fontSize: RFPercentage(2.5) }}>Reply</Text>
       </Pressable>
     </View>
   );
