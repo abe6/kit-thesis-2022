@@ -111,7 +111,7 @@ export function EmptyFriend() {
           justifyContent: "center",
           alignItems: "center",
           width: Dimensions.get("window").width - 37,
-          paddingVertical: 40,
+          paddingVertical: 10,
           paddingHorizontal: 40,
           marginRight: 20,
         },
@@ -121,7 +121,6 @@ export function EmptyFriend() {
         style={{
           fontSize: RFPercentage(2),
           fontWeight: "bold",
-          marginBottom: 10,
           textAlign: "center",
         }}
       >

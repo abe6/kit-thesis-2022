@@ -102,13 +102,13 @@ export function EmptyMetrics() {
     >
       <Text
         style={{
-          fontSize: RFPercentage(3),
-          fontWeight: "bold",
+          fontSize: RFPercentage(1.5),
+          // fontWeight: "bold",
           marginBottom: 10,
           textAlign: "center",
         }}
       >
-        No metrics have been shared with you.
+        No metrics have been shared with you yet
       </Text>
     </View>
   );
