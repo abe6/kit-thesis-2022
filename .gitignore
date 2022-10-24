@@ -13,4 +13,4 @@ web-build/
 # macOS
 .DS_Store
 
-./firebase/firebase-config.tsx
+firebase/firebase-config.tsx
